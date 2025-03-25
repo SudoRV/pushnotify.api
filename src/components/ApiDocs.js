@@ -1,6 +1,5 @@
 import "../styles/ApiDocs.scss";
 import CodeBlock from "./CodeBlock";
-import replacePlaceholders from "../functions/replacePlaceholders";
 
 const ApiDocs = () => {
   return (

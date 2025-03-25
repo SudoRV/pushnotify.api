@@ -1,0 +1,92 @@
+/* Login Page Styling */
+.login-container{
+  width: 85%;      
+  padding: 16px;    
+  background: #fff;
+  box-shadow: 0 0 8px 1px rgba(0, 0, 0, 0.16);
+  border-radius: 10px;
+  text-align: center;
+}
+
+.login-container{
+
+h2 { 
+  margin: 0;
+  margin-bottom: 16px;
+  color: #333;
+  font-size: 24px;
+}
+
+  form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+  input {   
+  width: 100%;
+  padding: 10px;    
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  font-size: 15px;
+  background: #ececec;/*#3a3f47;*/
+  color: #181818;
+  transition: 0.3s;
+  
+  font-size:14px;
+}
+
+  input:focus {
+  background: #fff;/*#4a4f57;*/
+  border: 1px solid grey;
+}
+
+  button {  
+  width: 100%;
+  padding: 12px;
+  margin-top: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+  button:hover {
+  background: #0056b3;
+}
+
+  button:disabled {
+  background: #aaa;
+  cursor: not-allowed;
+}
+
+  p {
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+/* Success & Error Messages */
+  .success {
+  color: #28a745;
+}
+
+  .error {
+  color: #dc3545;
+}
+
+}
+
+
+/*desktop*/ 
+@media (min-width: 720px) {        
+  .login-container{
+    width: 60%;          
+  }    
+}
+  
+  

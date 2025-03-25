@@ -1,0 +1,47 @@
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #007BFF;  
+  background: linear-gradient(135deg, #0081fff4, #0067cc);
+  color: white;
+  padding: 6px 16px;
+}
+
+.navbar{
+
+.menu-btn {  
+  background: rgb(240,240,240);
+  border: none; 
+  border-radius: 6px;
+  padding: 4px 8px;
+  cursor: pointer;
+  color: rgb(20,20,20);
+  font-size: 17px;
+  font-weight: bold;
+  
+}
+
+.app-name{   
+    padding: 0;
+    margin: 0;    
+    color: white;
+    font-weight: bold;
+    font-size: 18px;        
+}
+
+}
+
+
+/*desktop*/
+/* Open sidebar by default for desktop */
+@media (min-width: 720px) {
+  .navbar{
+    justify-content: flex-end;
+    padding: 6px 20px;
+  }
+  .menu-btn{
+      display: none;
+  }
+}

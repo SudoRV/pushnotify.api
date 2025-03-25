@@ -1,0 +1,76 @@
+
+.register-device{
+    display: grid;
+    gap: 8px;
+    
+    .container{
+        
+    }
+    
+    .notification_cont{
+        overflow: hidden;
+        background: rgb(220,220,220);  
+        border-radius: 20px; 
+        width: 30px;                     
+        padding: 2px 4px 2px 8px;                       
+    }
+    
+    .notification_cont p{
+        margin: 0;         
+        overflow: hidden;           
+        z-index: 1;                                       
+    }
+    
+    .show-notification-status{
+        animation : hide 4s 1 ease-in-out forwards;
+    }
+    
+    @keyframes hide{
+        0%{
+            width: 30px;
+        } 
+        30%{
+            width: 90px;
+        } 
+        70%{
+            width: 90px;
+        }
+        100%{
+            width: 30px;           
+        }     
+    }
+    
+    .notification_icon{
+        width: 22px;
+        height: 22px;                                        
+                                           
+        z-index: 10;                             
+    }
+            
+    .shake {
+        animation: shake 1s ease-in-out;
+    }
+
+    @keyframes shake {
+        0%{ transform: rotate(0deg); }
+        10%{ transform: rotate(12deg); }
+        20%{ transform: rotate(-12deg); }
+        30%{ transform: rotate(12deg); }
+        40%{ transform: rotate(-12deg); }
+        50%{ transform: rotate(0deg); }
+    }   
+       
+    .api-input{
+        width: 100%;
+        padding: 10px;    
+        border-radius: 5px;
+        border: none;
+        outline: none;
+        font-size: 15px;
+        background: #ececec;/*#3a3f47;*/
+        color: #181818;
+        transition: 0.3s;
+        margin: 8px 0 18px 0;         
+        font-size:14px;
+    }  
+}

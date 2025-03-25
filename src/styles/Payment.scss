@@ -1,0 +1,117 @@
+.payment {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%; 
+  flex-grow:1;
+  background: #fff;/*#181818;*/    
+}
+
+.payment{
+
+.payment-card {
+  display: grid;
+  gap: 10px;
+  background: #fff;/*#282c34;*/
+  padding: 16px;  
+  margin-top: -16px;  
+  border-radius: 10px;
+  width: 85%;
+  text-align: center;
+  box-shadow: 0px 0px 8px 1px rgba(0, 0, 0, 0.16);
+}
+
+.payment-card h2 {
+  color: #181818;
+  margin-bottom: 0px;  
+  margin: 0;
+}
+
+.payment-card p {
+  color: #6b6b6b;
+  font-size: 14px; 
+  margin: 4px; 
+}
+
+.input-field {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  font-size: 15px;
+  background: #ececec;/*#3a3f47;*/
+  color: #181818;
+  transition: 0.3s;
+  
+  font-size:14px;
+}
+
+.input-field:focus {
+  background: #fff;/*#4a4f57;*/
+  border: 1px solid grey;
+}
+
+.phone-input {
+  width: 100%;    
+  display: flex;
+  align-items: center;
+  gap: 10px;    
+}
+
+.country-code{
+    width: 100px;
+    padding: 9px 4px;
+}
+
+.pay-button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.pay-button:hover {
+  background: #0056b3;
+}
+
+.pay-button:disabled {
+  background: #555;
+  cursor: not-allowed;
+}
+
+.loader {
+  width: 18px;
+  height: 18px;
+  border: 3px solid white;
+  border-radius: 50%;
+  border-top: 3px solid transparent;
+  animation: spin 0.8s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+}
+
+
+
+/*desktop*/ 
+// @media (min-width: 720px) {        
+//   .payment-card{
+//     width: 55% ! important;  
+//     margin: 10% ! important;
+//     margin-left: auto ! important;        
+//   }    
+// }
+  

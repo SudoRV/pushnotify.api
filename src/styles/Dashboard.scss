@@ -1,0 +1,91 @@
+.dashboard{
+  margin: auto;  
+  padding: 2px 16px 16px 16px;
+  background: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.dashboard { 
+
+h2 {
+  text-align: center;
+  color: #20232a;
+  margin: 20px auto 6px auto;    
+}
+
+.card {
+  background: #f8f9fa;
+  padding: 16px;
+  margin-top: 15px;  
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+}
+
+h3 {
+  color: #353f50;
+  margin-bottom: 8px;
+  text-align:center;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  text-align: left;
+}
+
+li {
+  padding: 5px 0;  
+}
+
+.error {
+  color: #ff4d4d;
+  font-size: 14px;
+  text-align: center;
+}
+
+.access-token-section p {
+  width: 100%;
+  max-height: 200px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;  
+  margin: 12px 0;
+  
+  text-align: left;
+  font-size: 14px;
+  overflow: auto;   
+  overflow-wrap: wrap-text;
+  word-wrap: break-word;
+}
+
+.generate-btn {
+  width: 100%;
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px;
+  border: none;  
+  cursor: pointer;
+  font-size: 15px;  
+  border-radius: 5px;
+}
+
+.generate-btn:hover {
+  background-color: #0056b3;
+}
+
+}
+
+
+/*desktop*/
+/* Open sidebar by default for desktop */
+@media (min-width: 720px) {
+  .dashboard{
+    padding: 2px 40px 2px 40px;
+  }
+
+  .card {
+    margin-bottom: 30px !important;
+  }
+}
+

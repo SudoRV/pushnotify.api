@@ -1,0 +1,53 @@
+.flex{
+    display: flex;
+}
+
+.jcc{
+    justify-content: center;
+}
+
+.aic{
+    align-items: center;
+}
+
+.jcsb{
+    justify-content: space-between;
+}
+
+.aisb{
+    align-items: space-between;
+}
+
+.fdc{
+    flex-direction: column;
+}
+
+.jcfs{
+    justify-content: flex-start;
+}
+
+.jcfe{
+    justify-content: flex-end;
+}
+
+.aifs{
+    align-items: flex-start;
+}
+
+.aife{
+    align-items: flex-end;
+}
+
+.w100{
+    width: 100%;
+}
+
+.h100{
+    height: 100%;
+}
+
+* {         
+    box-sizing: border-box;  
+    font-family: Arial, sans-serif;  
+}
+       

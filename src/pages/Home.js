@@ -141,7 +141,7 @@ const Home = () => {
         <section className="cta">
           <h2>🚀 Start Using PushNotify API Today!</h2>
           <p>Secure, fast, easy JWT token generation and Push Notification for your IoT projects.</p>
-          <a href="/api/documentation" className="btn">Read API Docs</a>
+          <a href="/documentation" className="btn">Read API Docs</a>
         </section>
       </div>
 

@@ -62,7 +62,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         </li>
                                        
         <li>
-          <a href="/api/documentation">Documentation</a>
+          <a href="/documentation">Documentation</a>
         </li>  
         
         <li>

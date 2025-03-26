@@ -1,3 +1,0 @@
-User-agent: *
-Allow: /
-Sitemap: https://pushnotify-api.onrender.com/sitemap.xml

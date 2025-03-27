@@ -85,7 +85,13 @@ h2 {
 /*desktop*/ 
 @media (min-width: 720px) {        
   .login-container{
-    width: 60%;          
+    width: 55%;          
+  }    
+}
+    
+@media (min-width: 1024px) {        
+  .login-container{
+    width: 45%;          
   }    
 }
   

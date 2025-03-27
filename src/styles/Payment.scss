@@ -107,11 +107,15 @@
 
 
 /*desktop*/ 
-// @media (min-width: 720px) {        
-//   .payment-card{
-//     width: 55% ! important;  
-//     margin: 10% ! important;
-//     margin-left: auto ! important;        
-//   }    
-// }
+@media (min-width: 720px) {        
+   .payment-card{
+     width: 55% ! important;          
+   }    
+}
+  
+@media (min-width: 1024px) {        
+   .payment-card{
+     width: 45% ! important;          
+   }    
+}
   

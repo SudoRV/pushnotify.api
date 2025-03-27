@@ -2,16 +2,14 @@ import React, { useState, useEffect, useRef } from "react";
 import replacePlaceholders from "../functions/replacePlaceholders";
 import "../styles/CodeBlock.scss";
 
-// Highlight code syntax
 const highlightCode = (code) => {
   return code
-    .replace(/</g, "&lt;") // Escape <
-    .replace(/>/g, "&gt;") // Escape >
-    .replace(/("[^"]*")(?=\s*:)/g, '<span style="color: #df3079">$1</span>') // Keys in red
-    .replace(/:\s*("[^"]*"|\d+)/g, ': <span style="color: #00a57d">$1</span>'); // Values in green
+    .replace(/</g, "&lt;") 
+    .replace(/>/g, "&gt;") 
+    .replace(/("[^"]*")(?=\s*:)/g, '<span style="color: #df3079">$1</span>') 
+    .replace(/:\s*("[^"]*"|\d+)/g, ': <span style="color: #00a57d">$1</span>'); 
 };
 
-// Language extension mapping
 const languageExtensions = {
   python: "py",
   nodejs: "js",
@@ -26,25 +24,23 @@ const languageExtensions = {
 };
 
 const CodeBlock = ({ className, mode, step, language, code }) => {  
-
-  // Get correct file extension
   const fileExtension = languageExtensions[language?.toLowerCase()] || language;
-  const fileName = `${step?.replaceAll(" ", "_")}.${fileExtension}`; // Generate file name
+  const fileName = `${step?.replaceAll(" ", "_")}.${fileExtension}`;
+  const storageKey = React.useMemo(() => `codeblock_${step}_${language}`, [step, language]);
 
-  const storageKey = React.useMemo(() => `codeblock_${step}_${language}`, [step, language]); // Unique key
   const [isEditable, setIsEditable] = useState(false);
   const [editableCode, setEditableCode] = useState(code);
-  
   const [highlightedCode, setHighlightedCode] = useState("");
-  const preRef = useRef(null);
+  const [showMenu, setShowMenu] = useState(false);
 
-  // Load saved code on mount
+  const preRef = useRef(null);
+  const fileMenuRef = useRef(null);
+
   useEffect(() => {
     const savedCode = localStorage.getItem(storageKey);
-    setEditableCode(savedCode || code);
+    setEditableCode(mode === "minimal" ? code : savedCode || code);
   }, [code, storageKey]);
 
-  // Update highlighted code when editableCode changes
   useEffect(() => {
     setHighlightedCode(highlightCode(editableCode));
   }, [editableCode]);
@@ -57,18 +53,29 @@ const CodeBlock = ({ className, mode, step, language, code }) => {
     if (isEditable) {
       const updatedText = preRef.current?.innerText || editableCode;
       setEditableCode(updatedText);
-      localStorage.setItem(storageKey, updatedText); // Save changes
+      localStorage.setItem(storageKey, updatedText);
     }
     setIsEditable((prev) => !prev);
   };
 
+  const resetToDefault = () => {
+    localStorage.removeItem(storageKey);
+    setEditableCode(code);
+    setShowMenu(false);
+  };
+
   return code === "no response" ? null : (
     <div className={`code-container ${className}`}>
-      {/* File Name at Top Left */}
       <div className="flex jcfe aife">
-        {mode!=="minimal" ? <div style={{ marginRight: "auto", color: "grey", fontSize: "12px" }} className="file-name">
-          {fileName}
-        </div> : ""}
+        {mode !== "minimal" && (
+          <div
+            className="file-name"
+            style={{ marginRight: "auto", color: "grey", fontSize: "12px", cursor: "pointer" }}
+            onClick={() => setShowMenu(!showMenu)}
+          >
+            {fileName}
+          </div>
+        )}
 
         <div className="flex jcfe btn-container">
           {mode !== "minimal" && (
@@ -83,10 +90,16 @@ const CodeBlock = ({ className, mode, step, language, code }) => {
       <pre ref={preRef} contentEditable={isEditable} suppressContentEditableWarning={true}>
         <code className="language-json" dangerouslySetInnerHTML={{ __html: highlightedCode }}></code>
       </pre>
+
+      {/* File Menu Popup */}
+      {showMenu && (
+        <div ref={fileMenuRef} className="file-menu">
+          <button className="menu-btn" onClick={resetToDefault}>Reset to Default</button>
+          <button className="menu-btn" onClick={() => setShowMenu(false)}>Cancel</button>
+        </div>
+      )}
     </div>
   );
 };
 
 export default CodeBlock;
-
-

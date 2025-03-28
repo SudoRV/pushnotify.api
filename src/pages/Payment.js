@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
-
 import "../styles/Payment.scss";
 
 const Payment = () => {
-  const [amount, setAmount] = useState("");
+  const [amount, setAmount] = useState(0);
   const [phone, setPhone] = useState("");
   const [countryCode, setCountryCode] = useState("+91"); // Default: India
   const [loading, setLoading] = useState(false);
@@ -24,20 +23,17 @@ const Payment = () => {
     document.body.appendChild(script);
 
     const urlParams = new URLSearchParams(window.location.search);
-    setAmount(parseInt(urlParams.get("amt") || "100"));
+    const queryAmount = parseInt(urlParams.get("amt") || "1");
+    if (queryAmount >= 1) setAmount(queryAmount);
   }, []);
 
   const handleResponse = async (response) => {
     try {
       const data = await response.json();
-      
-      if (data.success) {
+      if (data?.orderId) {
         setIsError(false);
         setResponseMessage("✅ Payment successful! Redirecting...");
-
-        setTimeout(() => {
-          window.location.href = "/dashboard";
-        }, 2000);
+        setTimeout(() => (window.location.href = "/dashboard"), 2000);
       } else {
         setIsError(true);
         setResponseMessage(data.message || "❌ Payment failed. Please try again.");
@@ -50,13 +46,13 @@ const Payment = () => {
 
   const makePayment = async () => {
     const userData = JSON.parse(localStorage.getItem("creds"));
-    
-    if (!amount || amount < 100) {
+
+    if (!amount || amount <= 0) {
       setIsError(true);
-      setResponseMessage("❌ Amount must be at least ₹100.");
+      setResponseMessage("❌ Amount must be at least ₹1.");
       return;
     }
-    if (!phone || phone.length < 10) {
+    if (!phone || phone.length !== 10) {
       setIsError(true);
       setResponseMessage("❌ Please enter a valid phone number.");
       return;
@@ -66,75 +62,72 @@ const Payment = () => {
       setResponseMessage("❌ Razorpay is still loading. Please wait.");
       return;
     }
+    if (!userData) {
+      setResponseMessage("❌ Please log in first.");
+      window.open("/login?close=auto", "_blank");
+      return;
+    }
 
     setLoading(true);
     try {
+      console.log(amount, userData.email)
       const response = await fetch(BASE_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ type: "payment", amount, currency: "INR", email: userData.email }),
-      });
-
-      handleResponse(response);
-
-      const data = await response.json();
-      if (!data.success) {
-        setLoading(false);
-        return;
-      }
+      });      
       
-      if (!userData) {
-        setResponseMessage("❌ Please log in first.");
-        window.open("/login?close=auto", "_blank");
+      const data = await response.json();
+      console.log(data)
+      if (!data?.orderId) {
+        setIsError(true);
+        setResponseMessage("❌ Payment initiation failed. Please try again.");
         setLoading(false);
         return;
       }
 
-      const { username, email } = userData;
-
+      // Proceed with Razorpay payment
       const options = {
-        key: "rzp_test_mTlsMRB3xieqUY",
+        key: "rzp_test_uFpA2il0WsVuWK",
         amount: data.amount,
         currency: "INR",
         order_id: data.orderId,
         name: "PushNotify API",
         description: "Payment to get access token to use PushNotify API",
-        handler: async function (response) {
-          response.creation_time = data.creation_time;
-          response.amount = data.amount;
-          response.user_id = userData["user-id"];
-          verifyPayment(response);
+        handler: async function (paymentResponse) {
+          paymentResponse.creation_time = Date.now();
+          paymentResponse.amount = data.amount;
+          paymentResponse.user_id = userData["user-id"];
+          paymentResponse.email = userData.email;
+          verifyPayment(paymentResponse);
         },
-        prefill: { username, email, contact: countryCode + phone },
+        prefill: { name: userData.username, email: userData.email, contact: countryCode + phone },
         theme: { color: "#181818" },
       };
-
+            
       const rzp = new window.Razorpay(options);
       rzp.open();
     } catch (error) {
       setIsError(true);
-      setResponseMessage("❌ Payment failed.");
+      setResponseMessage("❌ Payment request failed."+error);
     }
     setLoading(false);
   };
 
   const verifyPayment = async (paymentDetails) => {
+    console.log(paymentDetails)
     try {
       const response = await fetch(BASE_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ type: "verify-payment", ...paymentDetails }),
-      });
-
+      });      
+            
       const data = await response.json();
-      if (data.success) {
-        delete data.success;
-        delete data.message;
-        localStorage.setItem("t_data", JSON.stringify(data));
-
-        setTimeout(() => {
-          window.location.href = "/dashboard";
-        }, 2000);
+      console.log(data)
+      if (data?.t_data) {
+        localStorage.setItem("t_data", JSON.stringify(data.t_data));
+        setTimeout(() => (window.location.href = "/dashboard"), 2000);
       } else {
         setIsError(true);
         setResponseMessage("❌ Payment verification failed.");
@@ -156,11 +149,9 @@ const Payment = () => {
         <div className="payment-card">
           <h2>Make a Payment</h2>
 
-          {/* ✅ Render Response Message Here */}
+          {/* ✅ Response Message */}
           {responseMessage && (
-            <div className={`response-message ${isError ? "error" : "success"}`}>
-              {responseMessage}
-            </div>
+            <div className={`response-message ${isError ? "error" : "success"}`}>{responseMessage}</div>
           )}
 
           <p>Enter the amount and phone number to proceed.</p>
@@ -190,10 +181,8 @@ const Payment = () => {
 
           <input
             type="number"
-            placeholder="Enter amount (₹)"          
-            min="1"
+            placeholder="Enter amount (₹)"
             value={amount}
-            onChange={(e) => setAmount(e.target.value)}
             className="input-field amount"
             readOnly
           />

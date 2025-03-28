@@ -31,8 +31,7 @@ const AuthForm = () => {
       ...(mode === "signup" && { username }), // Only add username in signup
     };
 
-    try {
-      console.log(payload);
+    try {      
       const response = await fetch("https://inlmqkmxchdb5df6t3gjdqzpqi0jrfmc.lambda-url.eu-north-1.on.aws/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -40,16 +39,18 @@ const AuthForm = () => {
       });
 
       const data = await response.json();
-
+      
       console.log(data)
-
-      if (data.success) {
+                  
+      if (data.message==="Login successful" || data.message==="User registered") {                
         setMessage({ type: "success", text: `${mode === "signup" ? "Signup" : "Login"} successful!` });                                      
-        window.localStorage.setItem("creds",JSON.stringify(data.user_data));
-                         
-        if(data.t_data["transaction-id"]){ 
-            console.log("have tdata")           
-            window.localStorage.setItem("t_data",JSON.stringify(data.t_data));
+        localStorage.setItem("creds",JSON.stringify(data.user_data));
+                                        
+        if(data.t_data){ 
+            if(data.t_data["transaction-id"]){
+              console.log("have tdata")           
+              localStorage.setItem("t_data",JSON.stringify(data.t_data));
+            }
         }
                                          
         setTimeout(()=>{           
@@ -60,7 +61,7 @@ const AuthForm = () => {
             }
         },2000)
                    
-      } else {
+      } else {        
         if (data.message.includes("already exists")) {
           setMessage({ type: "error", text: "User Already Exists" });
         } else {

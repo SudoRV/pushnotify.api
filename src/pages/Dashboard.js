@@ -21,9 +21,9 @@ const Dashboard = () => {
       if (storedData) setUserData(storedData);
       if (transactionData) {
         if (transactionData["transaction-id"]) {
-          setTransaction(transactionData);
-          setAccessToken(transactionData["access-token"]);
+          setTransaction(transactionData);                    
         }
+        if(transactionData["access-token"]) setAccessToken(transactionData["access-token"]);
         setTestToken(transactionData["test-token"]);
         updateTokenExpiry(transactionData["test-token"]);
       }
@@ -65,12 +65,38 @@ const Dashboard = () => {
   }, [tokenExpiry]);
 
   const generateAccessToken = async () => {
-    if (!transaction) {
-      await alert("No transaction found. Please make a payment first.");      
-      makePayment();
+    if (!localStorage.getItem("creds")) {
+      await alert("Please login first.");      
+      window.open("/login?close=auto");
       return;
     } else if (accessToken) {
-      navigator.clipboard.writeText(accessToken);
+      navigator.clipboard.writeText(accessToken);      
+    }else{
+        //get access token
+        
+        // Construct URL for generating a new test token        
+        const BASE_URL = "https://inlmqkmxchdb5df6t3gjdqzpqi0jrfmc.lambda-url.eu-north-1.on.aws/";
+    const url = `${BASE_URL}?req=access-token&user=${userData["user-id"]}`;
+                    
+    try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error("Failed to fetch");
+        const data = await response.json();
+        if (!data["access-token"]) throw new Error("Invalid response");
+                
+        // Save new test token in local storage        
+        setAccessToken(data["access-token"]);
+                
+        localStorage.setItem("t_data", JSON.stringify({
+            ...JSON.parse(localStorage.getItem("t_data") || "{}"),
+            "access-token": data["access-token"]
+        }));
+
+        return { error: null, token: data["access-token"] };
+    } catch (error) {
+        console.error("Error fetching access token:", error);
+        return { error: "Failed to fetch access token" };
+    }
     }
   };
   
@@ -114,7 +140,7 @@ const Dashboard = () => {
           <h3>💳 Transaction History</h3>
           {transaction ? (
             <ul>
-              <li><strong>Amount:</strong> ₹{transaction.amount / 100 || "N/A"}</li>
+              <li><strong>Amount:</strong> ₹{transaction.amount || "N/A"}</li>
               <li><strong>Time:</strong> {new Date(transaction["timestamp"]).toLocaleString()}</li>
               <li><strong>Transaction ID:</strong> {transaction["transaction-id"]}</li>
             </ul>

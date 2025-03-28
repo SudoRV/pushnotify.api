@@ -23,7 +23,7 @@ const languageExtensions = {
   xml: "xml",
 };
 
-const CodeBlock = ({ className, mode, step, language, code }) => {  
+const CodeBlock = React.forwardRef(({ className, mode, step, language, code },savedCodeRef) => {  
   const fileExtension = languageExtensions[language?.toLowerCase()] || language;
   const fileName = `${step?.replaceAll(" ", "_")}.${fileExtension}`;
   const storageKey = React.useMemo(() => `codeblock_${step}_${language}`, [step, language]);
@@ -39,7 +39,7 @@ const CodeBlock = ({ className, mode, step, language, code }) => {
   useEffect(() => {
     const savedCode = localStorage.getItem(storageKey);
     setEditableCode(mode === "minimal" ? code : savedCode || code);
-  }, [code, storageKey]);
+  }, [mode, code, storageKey]);
 
   useEffect(() => {
     setHighlightedCode(highlightCode(editableCode));
@@ -88,7 +88,7 @@ const CodeBlock = ({ className, mode, step, language, code }) => {
       </div>
 
       <pre ref={preRef} contentEditable={isEditable} suppressContentEditableWarning={true}>
-        <code className="language-json" dangerouslySetInnerHTML={{ __html: highlightedCode }}></code>
+        <code ref={savedCodeRef} className="language-json" dangerouslySetInnerHTML={{ __html: highlightedCode }}></code>
       </pre>
 
       {/* File Menu Popup */}
@@ -100,6 +100,6 @@ const CodeBlock = ({ className, mode, step, language, code }) => {
       )}
     </div>
   );
-};
+});
 
 export default CodeBlock;

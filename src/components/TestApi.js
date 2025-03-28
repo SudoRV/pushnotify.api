@@ -22,18 +22,9 @@ const TestAPI = () => {
     setDeviceToken(token);
     setRunBtnText("Paste Device Token");
   };
-
-  const codeRefs = useRef({});    
-
-  const run = async (event, step) => {
-    let latestCode =
-      updatedCode[step]?.[selectedLanguage] || 
-      codeRefs.current[step]?.innerText || 
-      codeExamples[step][selectedLanguage];
-
-    const btnText = event.target.innerText;
-
-    if (btnText === "Paste Device Token") {
+  
+  async function replaceHolders(latestCode, btnText, step, event){
+      if (btnText === "Paste Device Token") {
       latestCode = latestCode.replace(/"device-token\s*"\s*:\s*"(.*?)"/, `"device-token": "${deviceToken}"`);
       setUpdatedCode((prev) => ({ ...prev, [step]: { [selectedLanguage]: latestCode } }));
       setRunBtnText("Save Token");
@@ -56,9 +47,8 @@ const TestAPI = () => {
       event.target.innerText = "Send Notification";
       return;
     }
-
-    try {
-      setLoading((prev) => ({ ...prev, [step]: true }));
+    
+    setLoading((prev) => ({ ...prev, [step]: true }));
       setResponses((prev) => ({
         ...prev,
         [step]: { [selectedLanguage]: `${btnText.split(" ")[0].replace(/e$/, "")}ing...` },
@@ -79,6 +69,7 @@ const TestAPI = () => {
       }
 
       const body = extractBody(latestCode);
+      alert(JSON.stringify(body,null,4))
       body["access-token"] = testToken;
 
       if (body["client-email"] === "your-service-account-client-email") {
@@ -92,17 +83,35 @@ const TestAPI = () => {
 
       if (body["private-key"] === "your-service-account-private-key") {
         body["private-key"] = secret["secret-key"];
-      }
+      } 
             
-      const response = await fetch(
-        "https://bsuf2bagnak4a7bcn2244z2ymi0ikygr.lambda-url.eu-north-1.on.aws/",
+      return body;
+  }
+
+  const codeRefs = useRef({});    
+
+  const run = async (event, step) => {
+      let latestCode = codeRefs.current[step][selectedLanguage].innerText;
+      const storedCode = localStorage.getItem(`codeblock_${step}_${selectedLanguage}`);
+      
+      const btnText = event.target.innerText;            
+      let body;
+      
+      if(!storedCode){
+          body = await replaceHolders(latestCode, btnText, step, event);
+      }else{
+          body = extractBody(latestCode);
+      }                                                      
+    
+    try {
+      const response = await fetch("https://bsuf2bagnak4a7bcn2244z2ymi0ikygr.lambda-url.eu-north-1.on.aws/",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body),
         }
       );
-
+            
       const data = await response.json();
       setResponses((prev) => ({ ...prev, [step]: { [selectedLanguage]: JSON.stringify(data, null, 2) } }));
       setRunBtnText("Copy Device Id");
@@ -136,6 +145,10 @@ const TestAPI = () => {
             <h3>{index + 1}️⃣ {step}</h3>
 
             <CodeBlock
+              ref={ (el)=>{
+                  if(!codeRefs.current[step]) codeRefs.current[step] = {};
+                  codeRefs.current[step][selectedLanguage] = el;
+              } }              
               className="code-editor"
               step={step}
               language={selectedLanguage}

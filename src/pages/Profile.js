@@ -49,8 +49,8 @@ const Profile = () => {
           <h3>💰 Transaction Summary</h3>
           {transactionData ? (
             <ul>
-              <li><strong>Total Transactions:</strong> {transactionData["amount"] / 100 || 0}</li>
-              <li><strong>Last Transaction:</strong> ₹{transactionData.amount / 100 || "N/A"} on {new Date(transactionData["timestamp"]).toLocaleString()}</li>
+              <li><strong>Amount:</strong> {transactionData["amount"] || 0}</li>
+              <li><strong>Time: </strong>{new Date(transactionData["timestamp"]).toLocaleString()}</li>
               <li><strong>Transaction ID:</strong> {transactionData["transaction-id"] || "N/A"}</li>
             </ul>
           ) : (

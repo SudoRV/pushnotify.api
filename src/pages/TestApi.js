@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
-import TestApiPage from "../components/TestApi";
+import TestApiModule from "../components/TestApi";
+import Footer from "../components/Footer";
 
 function TestApi(){
     const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -10,7 +11,8 @@ function TestApi(){
     <>
         <Navbar toggleSidebar={() => setSidebarOpen(!isSidebarOpen)} />
         <Sidebar isOpen={isSidebarOpen} toggleSidebar={() => setSidebarOpen(false)} />
-        <TestApiPage />     
+        <TestApiModule /> 
+        <Footer />    
     </>
   );
 }

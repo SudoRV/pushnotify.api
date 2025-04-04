@@ -1,6 +1,6 @@
-import { 
-  messaging, 
-  getToken,  
+import {
+  messaging,
+  getToken,
 } from "../files/firebase";
 
 // 🔹 Register Service Worker
@@ -20,36 +20,36 @@ async function registerServiceWorker() {
   }
 }
 
-async function requestNotificationPermission(){
-    // Request Notification Permission
-    const permission = await Notification.requestPermission();
-    if (permission !== "granted") {
-      console.log("Notification permission denied.");
-      return false;
-    }else{
-        return true;
-    }
+async function requestNotificationPermission() {
+  // Request Notification Permission
+  const permission = await Notification.requestPermission();
+  if (permission !== "granted") {
+    console.log("Notification permission denied.");
+    return false;
+  } else {
+    return true;
+  }
 }
 
-async function getDeviceToken(){
-    await registerServiceWorker();
-    
-    try{
-        const token = await getToken(messaging, {
-          vapidKey: "BEYLH-zHd4f9kw2lZMTI5cilEv21mfNJbIZS1hlnYLcCJUI7x1RlN6cqatwX2MCx_NJF4NzC7lHPFKAT2EQHnRE"
-        });
+async function getDeviceToken() {
+  await registerServiceWorker();
 
-        if (!token) {
-          console.log("No registration token available.");
-          return null;
-        }
+  try {
+    const token = await getToken(messaging, {
+      vapidKey: "BEYLH-zHd4f9kw2lZMTI5cilEv21mfNJbIZS1hlnYLcCJUI7x1RlN6cqatwX2MCx_NJF4NzC7lHPFKAT2EQHnRE"
+    });
 
-        return token;
-    }catch(error){
-        if(error.toString().includes("permission-blocked")){
-            return "Notification Permission Blocked! Enable Through Site Setting"
-        }
+    if (!token) {
+      console.log("No registration token available.");
+      return null;
     }
+
+    return token;
+  } catch (error) {
+    if (error.toString().includes("permission-blocked")) {
+      return "Notification Permission Blocked! Enable Through Site Setting"
+    }
+  }
 }
 
 

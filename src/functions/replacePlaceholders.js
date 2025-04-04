@@ -20,7 +20,7 @@ const replacePlaceholders = (rawText) => {
   updatedText = updatedText.replace(/"client-email\s*"\s*:\s*"(.*?)"/, `"client-email": "${clientEmail}"`);
 
   // Replace "private-key" with secret key from JSON file
-  updatedText = updatedText.replace(/"private-key\s*"\s*:\s*"(.*?)"/, `"private-key": "${secret["secret-key"].replaceAll("\n","\\n")}"`);
+  updatedText = updatedText.replace(/"private-key\s*"\s*:\s*"(.*?)"/, `"private-key": "${secret["secret-key"].replaceAll("\n", "\\n")}"`);
 
   return updatedText.replaceAll("\n", " ");
 };

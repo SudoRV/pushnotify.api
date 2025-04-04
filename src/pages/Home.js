@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
+import Footer from "../components/Footer";
 
 import "../styles/Home.scss";
 
@@ -114,12 +115,13 @@ const Home = () => {
           <div className="pricing-container">
             <div className="price-card">
               <h3>🆓 Free Plan</h3>
-              <p>Get started with basic JWT token generation.</p>
+              <p>Get started with Freemium 1000 api calls/day.</p>
               <strong>₹0</strong>
               <ul>
-                <li>✅ Test JWT Tokens</li>
-                <li>🚫 No push notifications</li>
-                <li>🚫 Limited API access</li>
+                <li>✅ JWT Tokens Generation</li>
+                <li>✅ Push notifications</li>
+                <li>✅ Limited API access</li>
+                <li>Limit 1000 API calls/day</li>
               </ul>
               <a href="/dashboard" className="btn">Start for Free</a>
             </div>
@@ -128,9 +130,10 @@ const Home = () => {
               <p>Unlock full API access and push notifications.</p>
               <strong>₹100 (One-time)</strong>
               <ul>
-                <li>✅ Unlimited JWT Tokens</li>
+                <li>✅ JWT Token Generation</li>
                 <li>✅ Push Notifications</li>
                 <li>✅ Full API Access</li>
+                <li>Unlimited API calls</li>
               </ul>
               <a href="/payment?amt=100" className="btn">Upgrade Now</a>
             </div>
@@ -145,6 +148,7 @@ const Home = () => {
         </section>
       </div>
 
+      <Footer />
     </>
   );
 };

@@ -37,7 +37,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
   return (
     <div className={`sidebar ${isOpen ? "open" : ""}`}>
       <div style={{ margin: "0 8px 8px 8px", "borderBottom": "1px solid #9e9e9ee1"}} className="flex aic jcsb">
-        <h2 style={{ padding: 0, margin: 0, "fontSize": "21px", color: "#007BFF" }}>Quick Links</h2>
+        <h2 style={{ padding: "2px 0px", margin: 0, "fontSize": "21px", color: "#007BFF" }}>Quick Links</h2>
         <button className="close-btn" onClick={toggleSidebar}>×</button>
       </div>      
       <ul>

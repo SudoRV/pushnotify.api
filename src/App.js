@@ -10,6 +10,7 @@ import Payment from "./pages/Payment.js";
 import TestApi from "./pages/TestApi";
 import Profile from "./pages/Profile"
 import ResetPassword from "./pages/ResetPassword";
+import Contact from "./pages/Contact";
 
 function App() {
   return (
@@ -23,7 +24,8 @@ function App() {
         <Route path="/testapi" element={<TestApi />} />       
         <Route path="/dashboard" element={<Dashboard />} />          
         <Route path="/payment" element={<Payment />} />
-        <Route path="/reset-password" element={<ResetPassword />} />                 
+        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/contact" element={<Contact />} />
       </Routes>
     </Router>
   );

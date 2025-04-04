@@ -1,47 +1,45 @@
-
 .test-api {
   margin: auto;
-  padding: 10px 16px;  
+  padding: 10px 20px 30px 20px;
   background: #ffffff;
-  border-radius: 10px;
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
   text-align: center;
 
-  h2 {   
+  h2 {
     color: #f8f8f2;
-    background: #333; 
+    background: #333;
     padding: 10px;
-    margin-top: 2px;
-    font-size: 18px;
-    border-radius: 12px; 
+    margin-top: 8px;
+    border-radius: 8px;
   }
 
   p {
-    color: #666;    
+    color: #666;
   }
 
-  .language-tabs {  
-    width: 100%;      
-    display: flex;               
+  .language-tabs {
+    width: 100%;
+    display: flex;
     border-bottom: 2px solid #ddd;
-    border-radius : 0px;    
+    border-radius: 0px;
     overflow: auto;
+    margin: 25px 0px;
 
-    .lang-tab {  
-      flex-grow: 1;         
+    .lang-tab {
+      flex-grow: 1;
       border: none;
-      padding: 6px;      
-      background: none;      
+      padding: 6px;
+      background: none;
       cursor: pointer;
       color: #007bff;
       transition: 0.3s;
+      font-size: inherit;
       font-weight: bold;
-      /*transition: all 1s linear forwards;*/
-            
+
       &.active {
         border-bottom: 4px solid #007bff;
         color: #0056b3;
-        background-color: rgba(220,220,220,0.4);
+        background-color: rgba(220, 220, 220, 0.4);
       }
 
       &:hover {
@@ -50,63 +48,64 @@
     }
   }
 
+  .api-steps{
+    gap: 40px;
+  }
+
   .api-step {
-    width: 100%;   
-    gap: 18px;   
+    width: 100%;
+    gap: 18px;
     background: #f9f9f9;
     padding: 16px;
-    margin: 20px 0;
-    margin-bottom: 40px;
+    margin-bottom: 0px;
     border-radius: 8px;
     box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.3);
-    text-align: left;    
+    text-align: left;
 
-    h3 {      
-      color: #007bff; 
-      margin: 0;    
-    }
-
-    pre code{
-        font-size: 14px;        
+    h3 {
+      color: #007bff;
+      margin: 0;
     }
 
     .api-btn {
-  position: relative;
-  padding: 10px 20px;
-  font-size: 16px;
-  border: none;
-  cursor: pointer;
-  background-color: #007bff;
-  color: white;
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 130px;
-  transition: background 0.3s;
+      position: relative;
+      padding: 10px 20px;
+      border: none;
+      cursor: pointer;
+      background-color: #007bff;
+      color: white;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 130px;
+      transition: background 0.3s;
 
-  &:disabled {     
-    cursor: not-allowed;
-  }
-  
-  .spinner {
-    width: 14px;
-    height: 14px;
-    border: 2px solid white;
-    border-top: 2px solid transparent;
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-    margin-right: 8px;
+      &:disabled {
+        cursor: not-allowed;
+      }
+
+      .spinner {
+        width: 14px;
+        height: 14px;
+        border: 2px solid white;
+        border-top: 2px solid transparent;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+        margin-right: 8px;
+      }
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+
   }
 }
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-  
-   
-  }
-}
-
-  

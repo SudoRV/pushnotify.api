@@ -1,10 +1,10 @@
 import { jwtDecode } from "jwt-decode";
 const BASE_URL = "https://inlmqkmxchdb5df6t3gjdqzpqi0jrfmc.lambda-url.eu-north-1.on.aws/";
 
-async function generateTestToken(existingToken) {  
+async function generateTestToken(existingToken) {
     // Check if the existing token is expired
     if (existingToken) {
-        try {            
+        try {
             const decoded = jwtDecode(existingToken);
             const expiryTime = decoded.exp * 1000; // Convert to milliseconds
             const currentTime = Date.now();
@@ -25,7 +25,7 @@ async function generateTestToken(existingToken) {
     const url = `${BASE_URL}?req=test-token`;
 
     try {
-        const response = await fetch(url);      
+        const response = await fetch(url);
         if (!response.ok) throw new Error("Failed to fetch");
 
         const data = await response.json();

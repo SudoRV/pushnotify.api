@@ -1,55 +1,56 @@
-.code-container {  
-    width: 100%;
-    position: relative;  
-    background: #252525;      
-    border-radius: 6px;  
-    padding: 12px;        
-}  
-
-.file-name {
-    font-size: 12px;
-    color: grey;
-    cursor: pointer;
+.code-container {
+  width: 100%;
+  position: relative;
+  background: #252525;
+  border-radius: 6px;
+  padding: 12px;
 }
 
-pre {  
-    padding: 0;                        
-    margin: 0;  
-    margin-top: 8px;  
-    background: #252525;       
-    color: rgb(220,220,220);            
-    overflow: auto;              
-}  
+.file-name {
+  font-size: 12px;
+  color: grey;
+  cursor: pointer;
+}
 
-pre:focus{
-    outline: 1px solid rgb(200,200,200);
-    border-radius: 4px;
-} 
+pre {
+  padding: 0;
+  padding-bottom: 8px;
+  margin: 0;
+  margin-top: 8px;
+  background: #252525;
+  color: rgb(220, 220, 220);
+  overflow: auto;
+}
 
-.btn-container{
-    gap: 8px;
-}                                     
-        
-.copy-btn {  
-    padding: 4px;  
-    font-size: 12px;  
-    background: #007BFF;  
-    color: white;  
-    border: none;  
-    cursor: pointer;  
-    border-radius: 4px;  
-    width: 50px;  
-}  
+pre:focus {
+  outline: 1px solid rgb(200, 200, 200);
+  border-radius: 4px;
+}
 
-.copy-btn:hover {  
-    background: #0056b3;  
-}  
+.btn-container {
+  gap: 8px;
+}
+
+.copy-btn {
+  padding: 4px;
+  font-size: 12px;
+  background: #007BFF;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  width: 50px;
+}
+
+.copy-btn:hover {
+  background: #0056b3;
+}
 
 .file-menu {
   position: absolute;
   top: 40px;
   left: 12px;
-  background: white;  
+  background: white;
   box-shadow: 2px 2px 8px rgba(100, 100, 100, 0.4);
   border-radius: 4px;
   z-index: 10;
@@ -61,11 +62,11 @@ pre:focus{
 
 .menu-btn {
   background: none;
-  border: none;  
+  border: none;
   min-width: 100px;
   text-align: left;
-  cursor: pointer;  
-  color: #252525;   
+  cursor: pointer;
+  color: #252525;
   padding: 2px 4px;
 }
 

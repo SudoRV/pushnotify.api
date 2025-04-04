@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
-import { jwtDecode } from "jwt-decode"; 
+import Footer from "../components/Footer";
+import { jwtDecode } from "jwt-decode";
 import generateTestToken from "../functions/generateTestToken";
 import "../styles/Dashboard.scss";
 
@@ -11,7 +12,7 @@ const Dashboard = () => {
   const [testToken, setTestToken] = useState("");
   const [accessToken, setAccessToken] = useState("");
   const [tokenExpiry, setTokenExpiry] = useState(null);
-  const [timeLeft, setTimeLeft] = useState("");    
+  const [timeLeft, setTimeLeft] = useState("");
 
   useEffect(() => {
     try {
@@ -21,9 +22,9 @@ const Dashboard = () => {
       if (storedData) setUserData(storedData);
       if (transactionData) {
         if (transactionData["transaction-id"]) {
-          setTransaction(transactionData);                    
+          setTransaction(transactionData);
         }
-        if(transactionData["access-token"]) setAccessToken(transactionData["access-token"]);
+        if (transactionData["access-token"]) setAccessToken(transactionData["access-token"]);
         setTestToken(transactionData["test-token"]);
         updateTokenExpiry(transactionData["test-token"]);
       }
@@ -66,40 +67,40 @@ const Dashboard = () => {
 
   const generateAccessToken = async () => {
     if (!localStorage.getItem("creds")) {
-      await alert("Please login first.");      
+      await alert("Please login first.");
       window.open("/login?close=auto");
       return;
     } else if (accessToken) {
-      navigator.clipboard.writeText(accessToken);      
-    }else{
-        //get access token
-        
-        // Construct URL for generating a new test token        
-        const BASE_URL = "https://inlmqkmxchdb5df6t3gjdqzpqi0jrfmc.lambda-url.eu-north-1.on.aws/";
-    const url = `${BASE_URL}?req=access-token&user=${userData["user-id"]}`;
-                    
-    try {
+      navigator.clipboard.writeText(accessToken);
+    } else {
+      //get access token
+
+      // Construct URL for generating a new test token        
+      const BASE_URL = "https://inlmqkmxchdb5df6t3gjdqzpqi0jrfmc.lambda-url.eu-north-1.on.aws/";
+      const url = `${BASE_URL}?req=access-token&user=${userData["user-id"]}`;
+
+      try {
         const response = await fetch(url);
         if (!response.ok) throw new Error("Failed to fetch");
         const data = await response.json();
         if (!data["access-token"]) throw new Error("Invalid response");
-                
+
         // Save new test token in local storage        
         setAccessToken(data["access-token"]);
-                
+
         localStorage.setItem("t_data", JSON.stringify({
-            ...JSON.parse(localStorage.getItem("t_data") || "{}"),
-            "access-token": data["access-token"]
+          ...JSON.parse(localStorage.getItem("t_data") || "{}"),
+          "access-token": data["access-token"]
         }));
 
         return { error: null, token: data["access-token"] };
-    } catch (error) {
+      } catch (error) {
         console.error("Error fetching access token:", error);
         return { error: "Failed to fetch access token" };
-    }
+      }
     }
   };
-  
+
   const makePayment = async () => {
     await alert("Redirecting to Payment Page");
     const paymentWindow = window.open("/payment?amt=100", "_blank");
@@ -146,7 +147,7 @@ const Dashboard = () => {
             </ul>
           ) : (
             <p className="error">
-              No transactions found. <button style={{ all:"unset", color: "blue", textDecoration: "underline" }} onClick={makePayment}>Make Payment</button>
+              No transactions found. <button style={{ all: "unset", color: "blue", textDecoration: "underline" }} onClick={makePayment}>Make Payment</button>
             </p>
           )}
         </div>
@@ -175,12 +176,20 @@ const Dashboard = () => {
           <h3>🔑 Access Token</h3>
           <p>{accessToken ? accessToken : "No access token generated yet"}</p>
 
-          <button className="generate-btn" onClick={generateAccessToken}>
-            {accessToken ? "Copy Token" : "Get Access Token"}
-          </button>
+          <div style={{ gap: "8px" }} className="flex jcc aic ">
+            <button className="generate-btn" onClick={generateAccessToken}>
+              {accessToken ? "Copy Token" : "Get Access Token"}
+            </button>
+
+            {accessToken ? (<button onClick={() => window.open("/payment?close=auto&amt=1")} className="buy-premium generate-btn">
+              {transaction?.amount ? (transaction?.amount < 1 ? "Extend Limit" : "Unlimited") : "Extend Limit"}
+            </button>) : ""}
+          </div>
         </div>
 
       </div>
+
+      <Footer />
     </>
   );
 };

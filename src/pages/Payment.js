@@ -79,6 +79,12 @@ const Payment = () => {
       
       const data = await response.json();
       console.log(data)
+      if(data?.type=="error"){
+        setIsError(true);
+        setResponseMessage(data.message);
+        setLoading(false);
+        return;
+      }
       if (!data?.orderId) {
         setIsError(true);
         setResponseMessage("❌ Payment initiation failed. Please try again.");
@@ -124,10 +130,15 @@ const Payment = () => {
       });      
             
       const data = await response.json();
-      console.log(data)
+           
+      console.log("tdata",data)
       if (data?.t_data) {
         localStorage.setItem("t_data", JSON.stringify(data.t_data));
         setTimeout(() => (window.location.href = "/dashboard"), 2000);
+      } else if(data?.type=="error"){
+        alert()
+        setIsError(true);
+        setResponseMessage(data.message);
       } else {
         setIsError(true);
         setResponseMessage("❌ Payment verification failed.");

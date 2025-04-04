@@ -1,0 +1,128 @@
+.contact-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f9f9f9;
+    position: relative;
+    flex: 1;
+  }
+  
+  .contact-container {
+    width: 50%;
+    padding: 25px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    animation: fadeIn 0.5s ease-in-out;
+  
+    h2 {
+      font-size: 24px;
+      color: #333;
+      margin-bottom: 10px;
+    }
+  
+    p {
+      color: #555;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+  
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+  
+      .input-group {
+        display: flex;
+        flex-direction: column;
+  
+        input, textarea {
+          width: 100%;
+          padding: 12px;
+          border: 1px solid #ddd;
+          border-radius: 8px;
+          font-size: 16px;
+          transition: 0.3s;
+          box-shadow: 0 0 5px rgba(0, 123, 255, 0.1);
+  
+          &:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 12px rgba(0, 123, 255, 0.4);
+          }
+        }
+  
+        textarea {
+          resize: vertical;
+          height: 120px;
+        }
+      }
+  
+      button {
+        background: #007bff;
+        color: white;
+        padding: 12px;
+        font-size: 16px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: 0.3s;
+        position: relative;
+        overflow: hidden;
+  
+        &:hover {
+          background: #0056b3;
+        }
+  
+        svg {
+          font-size: 18px;
+        }
+      }
+    }
+  }
+  
+  /* Push Notification Animation */
+  .push-notification {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: #28a745;
+    color: white;
+    padding: 12px 16px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  
+    &.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  
+    svg {
+      font-size: 18px;
+    }
+  }
+  
+  /* Fade-in animation */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  

@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "../components/Navbar";
-import Sidebar from "../components/Sidebar";
 import "../styles/Profile.scss";
 import PasswordResetPopup from "../components/PasswordResetPopup";  // Import popup
 
@@ -24,9 +22,6 @@ const Profile = () => {
 
   return (
     <>
-      <Navbar toggleSidebar={() => setSidebarOpen(!isSidebarOpen)} />
-      <Sidebar isOpen={isSidebarOpen} toggleSidebar={() => setSidebarOpen(false)} />
-
       <div className="profile-container">
         <h2>👤 User Profile</h2>
 
@@ -65,8 +60,8 @@ const Profile = () => {
           <button className="settings-btn reset" onClick={() => setShowPopup(true)}>
             Reset Password
           </button>
-          <button 
-            className="settings-btn logout" 
+          <button
+            className="settings-btn logout"
             onClick={async () => {
               await alert("Logging You Out");
               localStorage.clear();

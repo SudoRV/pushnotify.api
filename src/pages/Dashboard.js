@@ -1,7 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "../components/Navbar";
-import Sidebar from "../components/Sidebar";
-import Footer from "../components/Footer";
 import { jwtDecode } from "jwt-decode";
 import generateTestToken from "../functions/generateTestToken";
 import "../styles/Dashboard.scss";
@@ -103,7 +100,7 @@ const Dashboard = () => {
 
   const makePayment = async () => {
     await alert("Redirecting to Payment Page");
-    const paymentWindow = window.open("/payment?amt=100", "_blank");
+    const paymentWindow = window.open("/payment?close=auto", "_blank");
     const checkPageClosed = setInterval(() => {
       if (paymentWindow.closed) {
         clearInterval(checkPageClosed);
@@ -112,85 +109,76 @@ const Dashboard = () => {
     }, 500);
   };
 
-  const [isSidebarOpen, setSidebarOpen] = useState(false);
-
   return (
-    <>
-      <Navbar toggleSidebar={() => setSidebarOpen(!isSidebarOpen)} />
-      <Sidebar isOpen={isSidebarOpen} toggleSidebar={() => setSidebarOpen(false)} />
+    <div className="dashboard">
+      <h2>User Dashboard</h2>
 
-      <div className="dashboard">
-        <h2>User Dashboard</h2>
-
-        {/* User Info */}
-        <div className="user-info card">
-          <h3>👤 User Information</h3>
-          {userData ? (
-            <ul>
-              <li><strong>Username:</strong> {userData.username}</li>
-              <li><strong>Email:</strong> {userData.email}</li>
-              <li><strong>User ID:</strong> {userData["user-id"]}</li>
-            </ul>
-          ) : (
-            <p className="error">No user data found. <a href="/login">Please login</a></p>
-          )}
-        </div>
-
-        {/* Transaction History */}
-        <div className="transaction-history card">
-          <h3>💳 Transaction History</h3>
-          {transaction ? (
-            <ul>
-              <li><strong>Amount:</strong> ₹{transaction.amount || "N/A"}</li>
-              <li><strong>Time:</strong> {new Date(transaction["timestamp"]).toLocaleString()}</li>
-              <li><strong>Transaction ID:</strong> {transaction["transaction-id"]}</li>
-            </ul>
-          ) : (
-            <p className="error">
-              No transactions found. <button style={{ all: "unset", color: "blue", textDecoration: "underline" }} onClick={makePayment}>Make Payment</button>
-            </p>
-          )}
-        </div>
-
-        {/* Test Token Section */}
-        <div className="access-token-section card">
-          <span style={{ float: "left", fontSize: "14px", color: timeLeft === "Expired" ? "red" : "green", fontWeight: "bold" }}>Expiry : {timeLeft || "..."}</span>
-          <h3>🔑 Test Token</h3>
-          <p>{testToken ? testToken : "No test token generated yet"}</p>
-
-          <button
-            className="generate-btn"
-            onClick={async () => {
-              const result = await generateTestToken(testToken);
-              setTestToken(result.token);
-              updateTokenExpiry(result.token);
-              navigator.clipboard.writeText(result.token);
-            }}
-          >
-            {timeLeft === "Expired" ? "Regenerate Token" : (testToken ? "Copy Token" : "Generate Token")}
-          </button>
-        </div>
-
-        {/* Access Token Section */}
-        <div className="access-token-section card">
-          <h3>🔑 Access Token</h3>
-          <p>{accessToken ? accessToken : "No access token generated yet"}</p>
-
-          <div style={{ gap: "8px" }} className="flex jcc aic ">
-            <button className="generate-btn" onClick={generateAccessToken}>
-              {accessToken ? "Copy Token" : "Get Access Token"}
-            </button>
-
-            {accessToken ? (<button onClick={() => window.open("/payment?close=auto&amt=1")} className="buy-premium generate-btn">
-              {transaction?.amount ? (transaction?.amount < 1 ? "Extend Limit" : "Unlimited") : "Extend Limit"}
-            </button>) : ""}
-          </div>
-        </div>
-
+      {/* User Info */}
+      <div className="user-info card">
+        <h3>👤 User Information</h3>
+        {userData ? (
+          <ul>
+            <li><strong>Username:</strong> {userData.username}</li>
+            <li><strong>Email:</strong> {userData.email}</li>
+            <li><strong>User ID:</strong> {userData["user-id"]}</li>
+          </ul>
+        ) : (
+          <p className="error">No user data found. <a href="/login">Please login</a></p>
+        )}
       </div>
 
-      <Footer />
-    </>
+      {/* Transaction History */}
+      <div className="transaction-history card">
+        <h3>💳 Transaction History</h3>
+        {transaction ? (
+          <ul>
+            <li><strong>Amount:</strong> ₹{transaction.amount || "N/A"}</li>
+            <li><strong>Time:</strong> {new Date(transaction["timestamp"]).toLocaleString()}</li>
+            <li><strong>Transaction ID:</strong> {transaction["transaction-id"]}</li>
+          </ul>
+        ) : (
+          <p className="error">
+            No transactions found. <button style={{ all: "unset", color: "blue", textDecoration: "underline" }} onClick={makePayment}>Make Payment</button>
+          </p>
+        )}
+      </div>
+
+      {/* Test Token Section */}
+      <div className="access-token-section card">
+        <span style={{ float: "left", fontSize: "14px", color: timeLeft === "Expired" ? "red" : "green", fontWeight: "bold" }}>Expiry : {timeLeft || "..."}</span>
+        <h3>🔑 Test Token</h3>
+        <p>{testToken ? testToken : "No test token generated yet"}</p>
+
+        <button
+          className="generate-btn"
+          onClick={async () => {
+            const result = await generateTestToken(testToken);
+            setTestToken(result.token);
+            updateTokenExpiry(result.token);
+            navigator.clipboard.writeText(result.token);
+          }}
+        >
+          {timeLeft === "Expired" ? "Regenerate Token" : (testToken ? "Copy Token" : "Generate Token")}
+        </button>
+      </div>
+
+      {/* Access Token Section */}
+      <div className="access-token-section card">
+        <h3>🔑 Access Token</h3>
+        <p>{accessToken ? accessToken : "No access token generated yet"}</p>
+
+        <div style={{ gap: "8px" }} className="flex jcc aic ">
+          <button className="generate-btn" onClick={generateAccessToken}>
+            {accessToken ? "Copy Token" : "Get Access Token"}
+          </button>
+
+          {accessToken ? (<button onClick={() => window.open("/payment?close=auto")} className="buy-premium generate-btn" disabled={(transaction?.amount ? (transaction?.amount >= 299 ? true : false) : false)} >
+            {transaction?.amount ? (transaction?.amount < 299 ? "Extend Limit" : "Quota Unlimited") : "Extend Limit"}
+          </button>) : ""}
+        </div>
+      </div>
+
+    </div>
   );
 };
 

@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "../components/Navbar";
-import Sidebar from "../components/Sidebar";
 import "../styles/Payment.scss";
 
 const Payment = () => {
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState(299);
   const [phone, setPhone] = useState("");
   const [countryCode, setCountryCode] = useState("+91"); // Default: India
   const [loading, setLoading] = useState(false);
@@ -21,10 +19,6 @@ const Payment = () => {
     script.onload = () => setRazorpayReady(true);
     script.onerror = () => setResponseMessage("Failed to load Razorpay.");
     document.body.appendChild(script);
-
-    const urlParams = new URLSearchParams(window.location.search);
-    const queryAmount = parseInt(urlParams.get("amt") || "1");
-    if (queryAmount >= 1) setAmount(queryAmount);
   }, []);
 
   const handleResponse = async (response) => {
@@ -75,11 +69,11 @@ const Payment = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ type: "payment", amount, currency: "INR", email: userData.email }),
-      });      
-      
+      });
+
       const data = await response.json();
       console.log(data)
-      if(data?.type=="error"){
+      if (data?.type == "error") {
         setIsError(true);
         setResponseMessage(data.message);
         setLoading(false);
@@ -110,12 +104,12 @@ const Payment = () => {
         prefill: { name: userData.username, email: userData.email, contact: countryCode + phone },
         theme: { color: "#181818" },
       };
-            
+
       const rzp = new window.Razorpay(options);
       rzp.open();
     } catch (error) {
       setIsError(true);
-      setResponseMessage("❌ Payment request failed."+error);
+      setResponseMessage("❌ Payment request failed." + error);
     }
     setLoading(false);
   };
@@ -127,15 +121,17 @@ const Payment = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ type: "verify-payment", ...paymentDetails }),
-      });      
-            
+      });
+
       const data = await response.json();
-           
-      console.log("tdata",data)
+
+      console.log("tdata", data)
       if (data?.t_data) {
+        setIsError(false);
+        setResponseMessage("✅ Payment Successful");
         localStorage.setItem("t_data", JSON.stringify(data.t_data));
-        setTimeout(() => (window.location.href = "/dashboard"), 2000);
-      } else if(data?.type=="error"){
+        setTimeout(() => (window.close()), 2000);
+      } else if (data?.type === "error") {
         alert()
         setIsError(true);
         setResponseMessage(data.message);
@@ -149,59 +145,53 @@ const Payment = () => {
     }
   };
 
-  const [isSidebarOpen, setSidebarOpen] = useState(false);
-
   return (
-    <div className="h100 flex fdc">
-      <Navbar toggleSidebar={() => setSidebarOpen(!isSidebarOpen)} />
-      <Sidebar isOpen={isSidebarOpen} toggleSidebar={() => setSidebarOpen(false)} />
 
-      <div className="payment">
-        <div className="payment-card">
-          <h2>Make a Payment</h2>
+    <div className="payment">
+      <div className="payment-card">
+        <h2>Make a Payment</h2>
 
-          {/* ✅ Response Message */}
-          {responseMessage && (
-            <div className={`response-message ${isError ? "error" : "success"}`}>{responseMessage}</div>
-          )}
+        {/* ✅ Response Message */}
+        {responseMessage && (
+          <div className={`response-message ${isError ? "error" : "success"}`}>{responseMessage}</div>
+        )}
 
-          <p>Enter the amount and phone number to proceed.</p>
+        <p>Enter the amount and phone number to proceed.</p>
 
-          <div className="phone-input">
-            <select
-              className="country-code input-field"
-              value={countryCode}
-              onChange={(e) => setCountryCode(e.target.value)}
-            >
-              <option value="+91">🇮🇳 +91 (India)</option>
-              <option value="+1">🇺🇸 +1 (USA)</option>
-              <option value="+44">🇬🇧 +44 (UK)</option>
-              <option value="+61">🇦🇺 +61 (Australia)</option>
-              <option value="+81">🇯🇵 +81 (Japan)</option>
-            </select>
-
-            <input
-              type="tel"
-              placeholder="Enter phone number"
-              maxLength="10"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              className="phone-field input-field"
-            />
-          </div>
+        <div className="phone-input">
+          <select
+            className="country-code input-field"
+            value={countryCode}
+            onChange={(e) => setCountryCode(e.target.value)}
+          >
+            <option value="+91">🇮🇳 +91 (India)</option>
+            <option value="+1">🇺🇸 +1 (USA)</option>
+            <option value="+44">🇬🇧 +44 (UK)</option>
+            <option value="+61">🇦🇺 +61 (Australia)</option>
+            <option value="+81">🇯🇵 +81 (Japan)</option>
+          </select>
 
           <input
-            type="number"
-            placeholder="Enter amount (₹)"
-            value={amount}
-            className="input-field amount"
-            readOnly
+            type="tel"
+            placeholder="Enter phone number"
+            maxLength="10"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            className="phone-field input-field"
           />
-
-          <button onClick={makePayment} disabled={loading || !razorpayReady} className="pay-button">
-            {loading ? <span className="loader"></span> : "Pay Now"}
-          </button>
         </div>
+
+        <input
+          type="number"
+          placeholder="Enter amount (₹)"
+          value={amount}
+          className="input-field amount"
+          readOnly
+        />
+
+        <button onClick={makePayment} disabled={loading || !razorpayReady} className="pay-button">
+          {loading ? <span className="loader"></span> : "Pay Now"}
+        </button>
       </div>
     </div>
   );

@@ -2,9 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 
-import Navbar from "../components/Navbar";
-import Sidebar from "../components/Sidebar";
-
 import "../styles/ResetPassword.scss";
 
 const ResetPassword = () => {
@@ -50,51 +47,47 @@ const ResetPassword = () => {
             setResponse("Passwords do not match.");
             return;
         }
-        
+
         const BASE_URL = "https://inlmqkmxchdb5df6t3gjdqzpqi0jrfmc.lambda-url.eu-north-1.on.aws/";
 
         try {
             const res = await fetch(BASE_URL, {
-                method:"POST",
-                headers:{
+                method: "POST",
+                headers: {
                     "Content-Type": "application/json",
                 },
-                body:JSON.stringify({
+                body: JSON.stringify({
                     type: "reset-password",
-                    token: searchParams.get("token"),                
+                    token: searchParams.get("token"),
                     email,
                     password,
-                })              
-            });   
-            
-            const response = await res.json();            
-                                                             
+                })
+            });
+
+            const response = await res.json();
+
             if (response.success) {
                 setResponse("Password reset successfully!")
-                await alert("Password reset successfully!");               
-                setTimeout(()=>{
+                await alert("Password reset successfully!");
+                setTimeout(() => {
                     window.close();
-                },2000)
+                }, 2000)
             } else {
                 setResponse(response.message);
             }
         } catch (err) {
-            setResponse("Failed to reset password."+err);
+            setResponse("Failed to reset password." + err);
         }
     };
-    
+
     const [isSidebarOpen, setSidebarOpen] = useState(false);
 
     return (
-        <div className="h100 flex fdc">
-         <Navbar toggleSidebar={() => setSidebarOpen(!isSidebarOpen)} />
-         <Sidebar isOpen={isSidebarOpen} toggleSidebar={() => setSidebarOpen(false)} />
-          
         <div className="reset-password-container">
             <div className="reset-password-box">
                 <h2>Reset Password</h2>
 
-                {response && <p className={ response.includes("successfully") ? "message" : "expired-message" }>{response}</p>}
+                {response && <p className={response.includes("successfully") ? "message" : "expired-message"}>{response}</p>}
 
                 <form onSubmit={handleSubmit}>
                     <div className="input-group">
@@ -119,14 +112,13 @@ const ResetPassword = () => {
                             disabled={!tokenValid}
                             className={!tokenValid ? "disabled" : ""}
                         />
-                    </div>                                        
+                    </div>
 
                     <button type="submit" className={`submit-btn ${!tokenValid ? "disabled" : ""}`} disabled={!tokenValid}>
                         Reset Password
                     </button>
                 </form>
             </div>
-        </div>
         </div>
     );
 };

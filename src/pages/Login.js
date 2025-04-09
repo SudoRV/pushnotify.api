@@ -1,7 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "../components/Navbar";
-import Sidebar from "../components/Sidebar";
-
 import "../styles/Login.scss";
 
 const AuthForm = () => {
@@ -14,7 +11,7 @@ const AuthForm = () => {
   const urlParams = new URLSearchParams(window.location.search);
   const autoClose = urlParams.get("close") === "auto";
 
-  useEffect(() => {   
+  useEffect(() => {
     // Check if the path is /signup or /login
     setMode(window.location.pathname.includes("signup") ? "signup" : "login");
   }, []);
@@ -31,7 +28,7 @@ const AuthForm = () => {
       ...(mode === "signup" && { username }), // Only add username in signup
     };
 
-    try {      
+    try {
       const response = await fetch("https://inlmqkmxchdb5df6t3gjdqzpqi0jrfmc.lambda-url.eu-north-1.on.aws/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -39,29 +36,29 @@ const AuthForm = () => {
       });
 
       const data = await response.json();
-      
+
       console.log(data)
-                  
-      if (data.message==="Login successful" || data.message==="User registered") {                
-        setMessage({ type: "success", text: `${mode === "signup" ? "Signup" : "Login"} successful!` });                                      
-        localStorage.setItem("creds",JSON.stringify(data.user_data));
-                                        
-        if(data.t_data){ 
-            if(data.t_data["transaction-id"]){
-              console.log("have tdata")           
-              localStorage.setItem("t_data",JSON.stringify(data.t_data));
-            }
+
+      if (data.message === "Login successful" || data.message === "User registered") {
+        setMessage({ type: "success", text: `${mode === "signup" ? "Signup" : "Login"} successful!` });
+        localStorage.setItem("creds", JSON.stringify(data.user_data));
+
+        if (data.t_data) {
+          if (data.t_data["transaction-id"]) {
+            console.log("have tdata")
+            localStorage.setItem("t_data", JSON.stringify(data.t_data));
+          }
         }
-                                         
-        setTimeout(()=>{           
-            if(autoClose){
-               window.close();                              
-            }else{                               
-               window.history.back();                                             
-            }
-        },2000)
-                   
-      } else {        
+
+        setTimeout(() => {
+          if (autoClose) {
+            window.close();
+          } else {
+            window.history.back();
+          }
+        }, 2000)
+
+      } else {
         if (data.message.includes("already exists")) {
           setMessage({ type: "error", text: "User Already Exists" });
         } else {
@@ -73,58 +70,51 @@ const AuthForm = () => {
     }
 
     setLoading(false);
-  }; 
-  
-  const [isSidebarOpen, setSidebarOpen] = useState(false);   
+  };
 
   return (
-    <div className="h100 flex fdc">
-    <Navbar toggleSidebar={() => setSidebarOpen(!isSidebarOpen)} />
-    <Sidebar isOpen={isSidebarOpen} toggleSidebar={() => setSidebarOpen(false)} />         
-    
-   <div className="login h100 flex fdc aic jcc">
-    <div className="login-container">       
-      <h2>{mode === "signup" ? "Sign Up" : "Login"}</h2>
-      <form onSubmit={handleSubmit}>
-        {mode === "signup" && (
+
+    <div className="login h100 flex fdc aic jcc">
+      <div className="login-container">
+        <h2>{mode === "signup" ? "Sign Up" : "Login"}</h2>
+        <form onSubmit={handleSubmit}>
+          {mode === "signup" && (
+            <input
+              type="text"
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+          )}
           <input
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value.trim())}
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value.trim())}
             required
           />
-        )}
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value.trim())}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value.trim())}
-          required
-        />
-        <button type="submit" disabled={loading}>
-          {loading ? `${mode === "signup" ? "Signing up..." : "Logging in..."}` : mode === "signup" ? "Sign Up" : "Login"}
-        </button>
-      </form>
-      {message && <p className={message.type}>{message.text}</p>}
-      <p>
-        {mode === "signup" ? "Already have an account?" : "Don't have an account?"}{" "}
-        <a href={mode === "signup" ? "/login" : "/signup"}>
-          {mode === "signup" ? "Login" : "Sign Up"}
-        </a>
-      </p>
-   
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value.trim())}
+            required
+          />
+          <button type="submit" disabled={loading}>
+            {loading ? `${mode === "signup" ? "Signing up..." : "Logging in..."}` : mode === "signup" ? "Sign Up" : "Login"}
+          </button>
+        </form>
+        {message && <p className={message.type}>{message.text}</p>}
+        <p>
+          {mode === "signup" ? "Already have an account?" : "Don't have an account?"}{" "}
+          <a href={mode === "signup" ? "/login" : "/signup"}>
+            {mode === "signup" ? "Login" : "Sign Up"}
+          </a>
+        </p>
+
+      </div>
     </div>
-   </div>    
-        
-  </div>
   );
 };
 

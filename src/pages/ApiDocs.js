@@ -3,7 +3,7 @@ import CodeBlock from "../components/CodeBlock";
 
 const ApiDocs = () => {
   return (
-    <div className="container apidocs">
+    <div className="container apidocs fg1">
       <h2 className="api-name">PushNotify API 🚀</h2>
       <p>
         <strong>

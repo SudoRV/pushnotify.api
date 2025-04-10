@@ -21,7 +21,7 @@ const Profile = () => {
 
   return (
     <>
-      <div className="profile-container">
+      <div className="profile-container fg1">
         <h2>👤 User Profile</h2>
 
         {/* User Details */}

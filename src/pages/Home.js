@@ -43,7 +43,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="home">
+    <div className="home fg1">
       {/* Hero Section */}
       <header className="hero">
         <h1>Effortless JWT Token Generation for IoT Devices</h1>

@@ -111,7 +111,7 @@ const Dashboard = () => {
   };
 
   return (        
-    <div className="dashboard w100">
+    <div className="dashboard w100 fg1">
         <h2>User Dashboard</h2>
 
         {/* User Info */}

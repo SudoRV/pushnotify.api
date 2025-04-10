@@ -126,7 +126,7 @@ const TestAPI = () => {
   };
 
   return (
-    <section className="test-api w100">
+    <section className="test-api w100 fg1">
       <h2>🛠️ Test PushNotify API</h2>
 
       <div className="language-tabs">

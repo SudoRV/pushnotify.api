@@ -54,7 +54,7 @@
     box-sizing: border-box;  
     font-family: Arial, sans-serif;  
 }
-   
+
 /*desktop*/
 @media (min-width: 720px) {
   .main-frame {

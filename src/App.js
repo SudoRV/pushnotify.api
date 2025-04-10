@@ -1,7 +1,6 @@
-import "./styles.css";
-
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+
 import Home from "./pages/Home";
 import Login from "./pages/Login"; 
 import ApiDocs from "./pages/ApiDocs";
@@ -12,8 +11,21 @@ import Profile from "./pages/Profile"
 import ResetPassword from "./pages/ResetPassword";
 import Contact from "./pages/Contact";
 
+import Navbar from "./components/Navbar";
+import Sidebar from "./components/Sidebar";
+import Footer from "./components/Footer";
+
+import "./styles.css";
+
 function App() {
+
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
+  
   return (
+    <div className="main-frame h100 w100 flex fdc">
+      <Navbar toggleSidebar={() => setSidebarOpen(prev => !prev)} />
+      <Sidebar isOpen={isSidebarOpen} toggleSidebar={() => setSidebarOpen(prev => !prev)} />
+        
     <Router>
       <Routes>         
         <Route path="/" element={<Home />} /> 
@@ -28,6 +40,12 @@ function App() {
         <Route path="/contact" element={<Contact />} />
       </Routes>
     </Router>
+    
+      { 
+        !["/login", "/signup", "/payment"].includes(window.location.pathname) && <Footer /> 
+      }
+
+    </div>
   );
 }
 

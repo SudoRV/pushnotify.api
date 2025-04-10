@@ -79,9 +79,7 @@ const ResetPassword = () => {
             setResponse("Failed to reset password." + err);
         }
     };
-
-    const [isSidebarOpen, setSidebarOpen] = useState(false);
-
+ 
     return (
         <div className="reset-password-container">
             <div className="reset-password-box">

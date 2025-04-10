@@ -2,6 +2,10 @@
     display: flex;
 }
 
+.fg1{
+    flex-grow: 1;
+}
+
 .jcc{
     justify-content: center;
 }
@@ -50,4 +54,22 @@
     box-sizing: border-box;  
     font-family: Arial, sans-serif;  
 }
+   
+/*desktop*/
+@media (min-width: 720px) {
+  .main-frame {
+    width: 75% ! important;
+    margin-left: auto; 
+  }
+
+  html {
+    font-size: 16px;
+  }
+
+  ::-webkit-scrollbar{
+    width: 12px;
+    height: 8px;
+    background-color: rgba(80,80,80,0.8);
+  }
+}  
        

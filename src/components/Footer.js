@@ -4,7 +4,7 @@ import { FaGithub, FaYoutube, FaEnvelope } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <footer className="footer">
+    <footer className="footer w100">
       <div className="container">
         {/* Left Side - API Name */}
         <div className="left">

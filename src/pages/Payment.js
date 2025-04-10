@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../styles/Payment.scss";
 
 const Payment = () => {
-  const [amount, setAmount] = useState(299);
+  const [amount] = useState(299);
   const [phone, setPhone] = useState("");
   const [countryCode, setCountryCode] = useState("+91"); // Default: India
   const [loading, setLoading] = useState(false);
@@ -21,23 +21,7 @@ const Payment = () => {
     document.body.appendChild(script);
   }, []);
 
-  const handleResponse = async (response) => {
-    try {
-      const data = await response.json();
-      if (data?.orderId) {
-        setIsError(false);
-        setResponseMessage("✅ Payment successful! Redirecting...");
-        setTimeout(() => (window.location.href = "/dashboard"), 2000);
-      } else {
-        setIsError(true);
-        setResponseMessage(data.message || "❌ Payment failed. Please try again.");
-      }
-    } catch (error) {
-      setIsError(true);
-      setResponseMessage("❌ An error occurred. Please try again.");
-    }
-  };
-
+  
   const makePayment = async () => {
     const userData = JSON.parse(localStorage.getItem("creds"));
 
@@ -73,7 +57,7 @@ const Payment = () => {
 
       const data = await response.json();
       console.log(data)
-      if (data?.type == "error") {
+      if (data?.type === "error") {
         setIsError(true);
         setResponseMessage(data.message);
         setLoading(false);

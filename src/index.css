@@ -32,7 +32,7 @@ code {
 }
 
 ::-webkit-scrollbar-thumb{
-  background-color: rgb(120,120,120);
+  background-color: rgb(180,180,180);
 }
 
 body::-webkit-scrollbar{
@@ -45,22 +45,4 @@ body::-webkit-scrollbar-thumb{
 
 ::-webkit-scrollbar-thumb:hover{
   background-color: rgba(150,150,150,1);
-}
-
-/*desktop*/
-@media (min-width: 720px) {
-  #root {
-    width: calc(75%);
-    margin-left: auto; 
-  }
-
-  html {
-    font-size: 16px;
-  }
-
-  ::-webkit-scrollbar{
-    width: 12px;
-    height: 8px;
-    background-color: rgba(80,80,80,0.8);
-  }
 }

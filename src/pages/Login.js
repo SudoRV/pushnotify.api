@@ -74,7 +74,7 @@ const AuthForm = () => {
 
   return (
 
-    <div className="login h100 flex fdc aic jcc">
+    <div className="login flex fg1 fdc aic jcc">  
       <div className="login-container">
         <h2>{mode === "signup" ? "Sign Up" : "Login"}</h2>
         <form onSubmit={handleSubmit}>
@@ -114,7 +114,7 @@ const AuthForm = () => {
         </p>
 
       </div>
-    </div>
+    </div>      
   );
 };
 

@@ -4,8 +4,7 @@ import PasswordResetPopup from "../components/PasswordResetPopup";  // Import po
 
 const Profile = () => {
   const [userData, setUserData] = useState(null);
-  const [transactionData, setTransactionData] = useState(null);
-  const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const [transactionData, setTransactionData] = useState(null);  
   const [showPopup, setShowPopup] = useState(false); // State for popup visibility
 
   useEffect(() => {

@@ -2,8 +2,7 @@
   margin: auto;  
   padding: 2px 16px 16px 16px;
   background: #fff;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);  
 }
 
 .dashboard { 
@@ -56,7 +55,16 @@ li {
   font-size: 14px;
   overflow: auto;   
   overflow-wrap: wrap-text;
-  word-wrap: break-word;
+  word-wrap: break-word; 
+}
+
+.access-token-section p::-webkit-scrollbar{
+    all:unset;
+    width: 0;
+}
+
+.access-token-section p::-webkit-scrollbar-thumb{
+  all:unset;
 }
 
 .generate-btn {

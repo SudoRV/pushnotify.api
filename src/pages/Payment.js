@@ -72,7 +72,7 @@ const Payment = () => {
 
       // Proceed with Razorpay payment
       const options = {
-        key: "rzp_test_uFpA2il0WsVuWK",
+        key: "rzp_live_Zy6koOmQNr2NyX",
         amount: data.amount,
         currency: "INR",
         order_id: data.orderId,

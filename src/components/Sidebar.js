@@ -35,12 +35,12 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
   };
 
   return (
-    <div className={`sidebar ${isOpen ? "open" : ""}`}>
+    <div className={`sidebar ${isOpen ? "open" : ""} flex fdc`}>
       <div style={{ margin: "0 8px 8px 8px", "borderBottom": "1px solid #9e9e9ee1"}} className="flex aic jcsb">
         <h2 style={{ padding: "2px 0px", margin: 0, "fontSize": "21px", color: "#007BFF" }}>Quick Links</h2>
         <button className="close-btn" onClick={toggleSidebar}>×</button>
       </div>      
-      <ul>
+      <ul className="flex fdc fg1">
         <li>
           <a href={`/${authMode.toLowerCase()}`}>
             { userData ? `👤 ${userData.username}` : authMode }
@@ -67,6 +67,10 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         
         <li>
           <a href="/dashboard">Dashboard</a>
+        </li>  
+        
+        <li style={{ "marginTop": "auto" }}>
+          <a href="/contact">Contact Us</a>
         </li>  
         
         <li>

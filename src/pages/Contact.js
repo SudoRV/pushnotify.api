@@ -22,7 +22,7 @@ const Contact = () => {
   };
 
   return (
-    <div className="contact-wrapper fg1">
+    <div className="contact-wrapper w100 fg1">
       {/* Push Notification Icon */}
       <div className={`push-notification ${showNotification ? "active" : ""}`}>
         <FaBell />

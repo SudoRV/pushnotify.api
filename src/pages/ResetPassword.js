@@ -14,6 +14,7 @@ const ResetPassword = () => {
 
     useEffect(() => {
         const token = searchParams.get("token");
+        console.log(token)
 
         if (!token) {
             setResponse("Invalid reset token.");

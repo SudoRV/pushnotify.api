@@ -11,7 +11,9 @@ const PasswordResetPopup = ({ closePopup }) => {
     const BASE_URL = "https://inlmqkmxchdb5df6t3gjdqzpqi0jrfmc.lambda-url.eu-north-1.on.aws/";
 
     //send reset link 
-    await fetch(BASE_URL+`?email=${email}`)
+    const response = await fetch(BASE_URL+`?req=reset-password-link&email=${email}`)
+    const res = response.json();
+    console.log(res)
     
     setTimeout(() => {
       alert("A password reset link has been sent to " + email);

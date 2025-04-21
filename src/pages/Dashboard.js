@@ -1,8 +1,21 @@
 import React, { useState, useEffect } from "react";
+import { FaSyncAlt } from "react-icons/fa";
+import { RefreshCw } from "lucide-react";
 
 import { jwtDecode } from "jwt-decode";
 import generateTestToken from "../functions/generateTestToken";
+import UsageGraph from "../components/ApiStats";
+
 import "../styles/Dashboard.scss";
+
+const BASE_URL = "https://inlmqkmxchdb5df6t3gjdqzpqi0jrfmc.lambda-url.eu-north-1.on.aws/";
+
+let dummyData = {
+  "xKeys":["0","09","10","11","14","16"],
+  "usage":[{"xKey":"0","time":"00:00:00","floatXKey":0,"calls":0}
+  ]
+};
+
 
 const Dashboard = () => {
   const [userData, setUserData] = useState(null);
@@ -30,6 +43,151 @@ const Dashboard = () => {
       console.error("Error parsing local storage data:", error);
     }
   }, []);
+  
+  
+  
+  //experiment 
+// Add at the top inside Dashboard component
+const [deviceList, setDeviceList] = useState([]);
+const [range, setRange] = useState("1d");
+const [apiMeta, setApiMeta] = useState({});
+const [graphData, setGraphData] = useState(dummyData);
+
+let lastFilter;
+
+useEffect(()=>{
+  if(userData) fetchAPIMeta();
+},[range, userData])
+
+// Function to fetch metadata and devices
+const fetchAPIMeta = async () => {
+  try {   
+    const today = new Date().getDate();     
+    const urlReq = `${BASE_URL}?req=api-stats&range=${range}&day=${today}&user-id=${userData["user-id"]}`;
+         
+    const response = await fetch(urlReq);    
+    const data = await response.json();        
+    const rawGraph = data.usage; 
+                         
+    if(data["access-token"]) {
+        const temp = data;
+        delete temp["usage"];
+        setApiMeta(temp);
+    }                        
+    if(Object.keys(rawGraph).length <= 0){  
+      setGraphData(dummyData);     
+      return;
+    };
+           
+    let graph = {};        
+    if(range==="1d"){                
+      const graphData = generateGraphData(rawGraph[today]); 
+      
+      //add 0th dummy data 
+      const dummy = {
+        xKey: 0,          
+        time: "00:00:00",
+        floatXKey : 0.0,       
+        calls: 0,
+      }      
+      graphData.unshift(dummy);
+           
+      let xKeys = [...new Set(graphData.map((item) => item["xKey"]))];
+      xKeys = xKeys.sort((a, b) => parseInt(a) - parseInt(b)); 
+      xKeys.push((parseInt(xKeys[xKeys.length - 1]) + 1).toString().padStart(2, '0'));          
+                   
+      graph = {
+        xKeys: xKeys,
+        usage: graphData,
+      } 
+                         
+    } else {          
+      const xKeys = Object.keys(rawGraph);             
+            
+      let mergedRawGraph = [];
+      xKeys.forEach((day)=>{
+        mergedRawGraph.push(...rawGraph[day]);
+      })                 
+      xKeys.unshift(1);
+                         
+      const graphData = generateGraphDataMonth(mergedRawGraph); 
+      
+      //add 0th dummy data 
+      const dummy = {
+        xKey: 1,          
+        time: "00:00:00",
+        floatXKey : 0,       
+        calls: 0,
+      }      
+      graphData.unshift(dummy);
+            
+      graph = {
+        xKeys: xKeys,
+        usage: graphData,
+      }                
+    }              
+    
+    setGraphData(graph);
+    //setDeviceList(data.devices);
+  } catch (error) {
+    console.error("Failed to fetch API metadata", error);
+  }
+};
+
+
+
+function generateGraphData(rawGraph) {
+  let index = 0;
+  let lastHour = 0;
+  return rawGraph.map(item => {
+    const date = new Date(item.timestamp);
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const seconds = date.getSeconds();
+    
+    if(lastHour !== hours){
+        index++;
+        lastHour = hours;
+    };           
+
+    return {
+      xKey: hours.toString().padStart(2, '0'),          
+      time: date.toLocaleTimeString('en-US',  { hour12: false }),
+      floatXKey : parseFloat(`${index}.${((hours + minutes / 60 + seconds / 3600).toFixed(6)).split(".")[1]}`),       
+      calls: item.calls,      
+    };             
+  });    
+}
+
+
+function generateGraphDataMonth(rawGraph) {
+  let index = -1;
+  let lastDay = null;
+
+  return rawGraph.map(item => {
+    const date = new Date(item.timestamp);
+    const day = date.getDate();
+    
+    if (lastDay !== day) {
+      index++;
+      lastDay = day;
+    }
+
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const seconds = date.getSeconds();
+
+    const timeFraction = (hours + minutes / 60 + seconds / 3600) / 24;
+
+    return {
+      xKey: day.toString(),
+      time: date.toLocaleTimeString('en-US', { hour12: false }), 
+      floatXKey: parseFloat(`${index}.${(timeFraction.toFixed(6).split(".")[1])}`),     
+      calls: item.calls,
+    };
+  });
+}
+
 
   // Function to update token expiry & start timer
   const updateTokenExpiry = (token) => {
@@ -73,8 +231,7 @@ const Dashboard = () => {
     } else {
       //get access token
 
-      // Construct URL for generating a new test token        
-      const BASE_URL = "https://inlmqkmxchdb5df6t3gjdqzpqi0jrfmc.lambda-url.eu-north-1.on.aws/";
+      // Construct URL for generating a new test token              
       const url = `${BASE_URL}?req=access-token&user=${userData["user-id"]}`;
 
       try {
@@ -178,9 +335,76 @@ const Dashboard = () => {
             </button>) : ""}
           </div>
         </div>
+        
+
+{/* Professional API Stats UI */}
+<div className="api-stats">
+      <div className="flex jcsb aic">
+        <h2>API Statistics</h2>
+        <button className="refresh-btn" onClick={()=>{fetchAPIMeta()}} title="Refresh">
+          <RefreshCw size={22} strokeWidth={1.4} />
+        </button>
+      </div>
+      
+
+      <div className="token-info">
+        <div className="token-line">
+          <span>Access Token:</span>
+          <code>{apiMeta['access-token']}</code>          
+        </div>
+
+        <div className="created-line">
+          <div>
+            <span>Created At:</span> <strong>{new Date(apiMeta["api-created-at"]).toLocaleDateString('en-GB')}</strong>
+          </div>
+          <div>
+            <span>Time:</span> <strong>{new Date(apiMeta["api-created-at"]).toLocaleTimeString()}</strong>
+          </div>
+        </div>
+        
+        <div className="created-line">
+          <div>
+            <span>Refresh At:</span> <strong>{new Date(apiMeta["api-refreshed-at"]).toLocaleDateString('en-GB')}</strong>
+          </div>
+          <div>
+            <span>Time:</span> <strong>{new Date(apiMeta["api-refreshed-at"]).toLocaleTimeString()}</strong>
+          </div>
+        </div>  
+            
+      </div>
+            
+      <div className="quota-info">
+        <div className="flex fdc text-center">
+          <span>Quota</span> <strong>1000</strong>
+        </div>
+        
+        <div className="flex fdc text-center">
+          <span>Used</span> <strong>{1000-(apiMeta.calls || 0)}</strong>
+        </div>
+        
+        <div className="flex fdc text-center">
+          <span>Remaining</span><strong>{apiMeta.calls}</strong>
+        </div>
+      </div>
+
+      <div className="filter-buttons">
+        <button onClick={() => setRange("1d")} className={range === "1d" ? "active" : ""}>Day</button>
+        <button onClick={() => setRange("1w")} className={range === "1w" ? "active" : ""}>Week</button>
+        <button onClick={() => setRange("1m")} className={range === "1m" ? "active" : ""}>Month</button>
+      </div>
+
+      <div className="graph">
+        <h4>API Usage ({range})</h4>
+        
+        <UsageGraph data={graphData} />
+        
+      </div>
+    </div>
+        
 
     </div>
   );
 };
 
 export default Dashboard;
+

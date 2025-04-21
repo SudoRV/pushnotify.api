@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "../styles/Contact.scss";
 import { FaPaperPlane, FaBell } from "react-icons/fa"; // Notification icon
+import { showNotification } from "../components/ShowNotification";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -9,26 +10,17 @@ const Contact = () => {
     message: "",
   });
 
-  const [showNotification, setShowNotification] = useState(false); // Push effect
-
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setShowNotification(true);  // Show push notification
-    setTimeout(() => setShowNotification(false), 3000); // Auto-hide after 3s
+    showNotification("Message Sent Successfully!")
   };
 
   return (
-    <div className="contact-wrapper w100 fg1">
-      {/* Push Notification Icon */}
-      <div className={`push-notification ${showNotification ? "active" : ""}`}>
-        <FaBell />
-        <p>Message Sent Successfully!</p>
-      </div>
-
+    <div className="contact-wrapper w100 fg1">    
       <div className="contact-container">
         <h2>Get in Touch</h2>
         <p>We’d love to hear from you! Fill out the form below.</p>

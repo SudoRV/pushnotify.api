@@ -6,8 +6,8 @@ import notification_off from "../icons/notification_off.svg";
 import "../styles/RegisterDevice.scss"; // Import styles
 
 const RegisterDevice = ({ onToken }) => {
-  const [deviceToken, setDeviceToken] = useState("");
-  const [notificationStatus, setNotificationStatus] = useState(Notification.permission);  
+  const [deviceToken, setDeviceToken] = useState("");  
+  const [notificationStatus, setNotificationStatus] = useState(window.Notification?.permission);  
 
   const preRef = useRef(null);
   const textRef = useRef(null);

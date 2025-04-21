@@ -21,7 +21,7 @@ async function registerServiceWorker() {
 }
 
 async function requestNotificationPermission() {
-  // Request Notification Permission
+  // Request Notification Permission  
   const permission = await Notification.requestPermission();
   if (permission !== "granted") {
     console.log("Notification permission denied.");

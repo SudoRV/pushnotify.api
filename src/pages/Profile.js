@@ -13,7 +13,7 @@ const Profile = () => {
       const storedTransaction = JSON.parse(localStorage.getItem("t_data"));
 
       if (storedUser) setUserData(storedUser);
-      if (storedTransaction) setTransactionData(storedTransaction);
+      if (storedTransaction?.amount > 0) setTransactionData(storedTransaction);
     } catch (error) {
       console.error("Error parsing local storage data:", error);
     }

@@ -3,18 +3,18 @@
   "name": "PushNotify API",
   "icons": [
     {
-      "src": "maskable_icon.png",
+      "src": "Icon-1024.png",
       "sizes": "1024x1024",
       "type": "image/png"
     },
     {
-      "src": "maskable_logo512.png",
+      "src": "Icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
     },
     {
-      "src": "logo192.png",
-      "sizes": "192x192",
+      "src": "Icon-192.png",
+      "sizes": "196x196",
       "type": "image/png"
     },
     {

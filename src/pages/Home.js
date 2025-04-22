@@ -73,7 +73,7 @@ const Home = () => {
           </div>
           <div className="feature">
             <h3>💰 Affordable</h3>
-            <p>Start for free or unlock full access for just ₹100 one-time.</p>
+            <p>Start for free or unlock full access for just ₹299 one-time.</p>
           </div>
         </div>
       </section>

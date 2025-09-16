@@ -29,7 +29,7 @@ const AuthForm = () => {
     };
 
     try {
-      const response = await fetch("https://inlmqkmxchdb5df6t3gjdqzpqi0jrfmc.lambda-url.eu-north-1.on.aws/", {
+      const response = await fetch("https://xnzd52zoqyuu7zkv5i5r42uiua0jzapk.lambda-url.eu-north-1.on.aws/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

@@ -1,5 +1,5 @@
 import { jwtDecode } from "jwt-decode";
-const BASE_URL = "https://inlmqkmxchdb5df6t3gjdqzpqi0jrfmc.lambda-url.eu-north-1.on.aws/";
+const BASE_URL = "https://xnzd52zoqyuu7zkv5i5r42uiua0jzapk.lambda-url.eu-north-1.on.aws/";
 
 async function generateTestToken(existingToken) {
     // Check if the existing token is expired
@@ -26,10 +26,10 @@ async function generateTestToken(existingToken) {
 
     try {
         const response = await fetch(url);
+        console.log(response)
         if (!response.ok) throw new Error("Failed to fetch");
 
-        const data = await response.json();
-        console.log(data)
+        const data = await response.json();        
         if (!data["test-token"]) throw new Error("Invalid response");
 
         // Save new test token in local storage

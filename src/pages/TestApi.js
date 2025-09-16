@@ -105,7 +105,7 @@ const TestAPI = () => {
     setLoading((prev) => ({ ...prev, [step]: true }));
 
     try {
-      const response = await fetch("https://bsuf2bagnak4a7bcn2244z2ymi0ikygr.lambda-url.eu-north-1.on.aws/",
+      const response = await fetch("https://nxudwgpewx5tcpxpzybksyoz5e0vraau.lambda-url.eu-north-1.on.aws/",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

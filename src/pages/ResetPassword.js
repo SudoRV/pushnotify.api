@@ -49,7 +49,7 @@ const ResetPassword = () => {
             return;
         }
 
-        const BASE_URL = "https://inlmqkmxchdb5df6t3gjdqzpqi0jrfmc.lambda-url.eu-north-1.on.aws/";
+        const BASE_URL = "https://xnzd52zoqyuu7zkv5i5r42uiua0jzapk.lambda-url.eu-north-1.on.aws/";
 
         try {
             const res = await fetch(BASE_URL, {

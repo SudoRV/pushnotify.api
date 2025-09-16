@@ -8,7 +8,7 @@ import UsageGraph from "../components/ApiStats";
 
 import "../styles/Dashboard.scss";
 
-const BASE_URL = "https://inlmqkmxchdb5df6t3gjdqzpqi0jrfmc.lambda-url.eu-north-1.on.aws/";
+const BASE_URL = "https://xnzd52zoqyuu7zkv5i5r42uiua0jzapk.lambda-url.eu-north-1.on.aws/";
 
 let dummyData = {
   "xKeys":["0","09","10","11","14","16"],
@@ -65,7 +65,8 @@ const fetchAPIMeta = async () => {
     const today = new Date().getDate();     
     const urlReq = `${BASE_URL}?req=api-stats&range=${range}&day=${today}&user-id=${userData["user-id"]}`;
          
-    const response = await fetch(urlReq);    
+    const response = await fetch(urlReq); 
+        
     const data = await response.json();        
     const rawGraph = data.usage; 
                          
@@ -311,6 +312,7 @@ function generateGraphDataMonth(rawGraph) {
             className="generate-btn"
             onClick={async () => {
               const result = await generateTestToken(testToken);
+              console.log(result)
               setTestToken(result.token);
               updateTokenExpiry(result.token);
               navigator.clipboard.writeText(result.token);
